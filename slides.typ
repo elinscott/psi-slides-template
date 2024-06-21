@@ -41,4 +41,9 @@ Text
 More text appears under the same subsection title as earlier
 
 == New Subsection
-But a new subsection starts a new page
+But a new subsection starts a new page.
+
+Now, let's cite a nice paper.@Linscott2023
+
+== References
+#bibliography("references.bib")
