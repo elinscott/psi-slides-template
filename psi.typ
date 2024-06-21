@@ -127,18 +127,22 @@
   (self.methods.touying-slide)(self: self, repeat: none, align(horizon, body))
 }
 
-#let matrix-slide(self: none, columns: none, rows: none, background-color: none, gutter: 5pt, stroke: none, ..bodies) = {
+#let matrix-slide(self: none, columns: none, rows: none, background-color: none, gutter: 5pt, stroke: none, alignment: none, title: none, ..bodies) = {
   self = utils.empty-page(self)
 
   let footer(self) = {
     block(inset: 2em, width: 100%, text(fill: self.colors.neutral, utils.call-or-display(self, self.uni-footer)))
   }
 
+  if title == none {
+    title = states.current-section-title
+  }
+
   // header
   self.uni-header = self => {
     grid(
       columns: (6fr, 1fr),
-      align(top + left, text(fill: self.colors.primary, weight: "bold", size: 1.2em, states.current-section-title)),
+      align(top + left, text(fill: self.colors.primary, weight: "bold", size: 1.2em, title)),
       align(top + right, image("media/logos/psi_black.png", height: 1.2em))
     )
   }
@@ -176,11 +180,18 @@
       panic("number of rows (" + str(num-rows) + ") * number of columns (" + str(num-cols) + ") must at least be number of content arguments (" + str(bodies.len()) + ")")
     }
     let cart-idx(i) = (calc.quo(i, num-cols), calc.rem(i, num-cols))
+
+    let alignment = if alignment == none {
+      left + horizon
+    } else {
+      alignment
+    }
+
     let color-body(idx-body) = {
       let (idx, body) = idx-body
       let (row, col) = cart-idx(idx)
       let color = if calc.even(row + col) { white } else { background-color }
-      set align(center + horizon)
+      set align(alignment)
       rect(inset: .5em, width: 100%, height: 100%, fill: color, stroke: stroke, body)
     }
     let content = grid(
@@ -193,7 +204,7 @@
 }
 
 #let slides(self: none, title-slide: true, slide-level: 1, ..args) = {
-  set text(font: "DejaVu Sans")
+  set text(font: "Arial")
   if title-slide {
     (self.methods.title-slide)(self: self)
   }
@@ -248,6 +259,11 @@
         align(top + left, text(fill: self.colors.primary, weight: "bold", size: 1.2em, self.uni-title)),
         align(top + right, image("media/logos/psi_black.png", height: 1.2em))
       )
+      } else {
+      grid(
+        columns: (1fr),
+        align(top + right, image("media/logos/psi_black.png", height: 1.2em))
+      )
     }
   }
 
@@ -283,9 +299,12 @@
   self.methods.init = (self: none, body) => {
     set text(size: 20pt)
     set heading(outlined: false)
-    show footnote.entry: set text(size: .6em)
+    show footnote.entry: set text(size: .6em, fill: self.colors.neutral)
+    set footnote.entry(separator: none, indent: 0em)
+    set bibliography(title: none, style: "nature-footnote.csl")
     body
   }
+
 
   // color theme
   self.colors += (
