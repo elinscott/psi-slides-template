@@ -3,7 +3,7 @@ repos:
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
-        types: [file]
+        types: [text]
       - id: check-yaml
   - repo: https://github.com/Enter-tainer/typstyle
     rev: v0.11.27
