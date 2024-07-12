@@ -1,4 +1,6 @@
 #import "@preview/touying:0.4.2": *
+#import "@preview/pinit:0.1.4": *
+#import "@preview/xarrow:0.3.0": xarrow
 #import "psi.typ"
 
 // color-scheme can be navy-red, blue-green, or pink-yellow
@@ -11,7 +13,15 @@
   author: [Edward Linscott],
   date: datetime(year: 2024, month: 1, day: 1),
   location: [Location]
+  references: [references.bib],
 )
+#let blcite(reference) = {
+  text(fill: white, cite(reference))
+}
+
+#set footnote.entry(clearance: 0em)
+#show bibliography: set text(0.6em)
+
 
 #let (init, slides) = utils.methods(s)
 #show: init

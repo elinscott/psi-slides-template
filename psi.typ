@@ -52,33 +52,60 @@
   )
   let info = self.info + args.named()
   info.authors = {
-    let authors =  if "authors" in info { info.authors } else { info.author }
-    if type(authors) == array { authors } else { (authors,) }
+    let authors = if "authors" in info {
+      info.authors
+    } else {
+      info.author
+    }
+    if type(authors) == array {
+      authors
+    } else {
+      (authors,)
+    }
   }
   let content = {
     align(left, image("media/logos/psi_scd_banner_white.png", height: 10%))
-    align(horizon, {
-      block(
-        inset: 0em,
-        breakable: false,
-        {
-          text(size: 2em, fill: self.colors.neutral-lightest, strong(info.title))
-          if info.subtitle != none {
-            linebreak()
-            text(size: 1.2em, fill: self.colors.neutral-lightest, strong(info.subtitle))
-          }
+    align(
+      horizon,
+      {
+        block(
+          inset: 0em,
+          breakable: false,
+          {
+            text(
+              size: 2em,
+              fill: self.colors.neutral-lightest,
+              strong(info.title),
+            )
+            if info.subtitle != none {
+              linebreak()
+              text(
+                size: 1.2em,
+                fill: self.colors.neutral-lightest,
+                strong(info.subtitle),
+              )
+            }
+          },
+        )
+        set text(size: .8em)
+        text(size: .8em, info.author, fill: self.colors.neutral-lightest)
+        linebreak()
+        if info.location != none {
+          text(
+            size: .8em,
+            info.location + ", ",
+            fill: self.colors.neutral-lightest,
+          )
         }
-      )
-      set text(size: .8em)
-      text(size: .8em, info.author, fill: self.colors.neutral-lightest)
-      linebreak()
-      if info.location != none {
-        text(size: .8em, info.location + ", ", fill: self.colors.neutral-lightest)
-      }
-      if info.date != none {
-        text(size: .8em, info.date.display("[day padding:none] [month repr:long] [year]"), fill: self.colors.neutral-lightest)
-      }
-    })
+        if info.date != none {
+          text(
+            size: .8em,
+            info.date.display("[day padding:none] [month repr:long] [year]"),
+            fill: self.colors.neutral-lightest,
+          )
+        }
+      },
+    )
   }
   (self.methods.touying-slide)(self: self, repeat: none, content)
 }
@@ -92,23 +119,45 @@
   }
 
   let footer(self) = {
-    block(inset: 2em, width: 100%, text(fill: self.colors.neutral-lightest, utils.call-or-display(self, self.uni-footer)))
+    block(
+      inset: 2em,
+      width: 100%,
+      text(
+        fill: self.colors.neutral-lightest,
+        utils.call-or-display(self, self.uni-footer),
+      ),
+    )
   }
 
   let header(self) = {
-      block(inset: 2em, width: 100%, align(top + right, image("media/logos/psi_white.png", height: 1.2em)))
+    block(
+      inset: 2em,
+      width: 100%,
+      align(top + right, image("media/logos/psi_white.png", height: 1.2em)),
+    )
   }
 
   self.page-args += (
     fill: self.colors.primary,
     footer: footer,
-    header: header)
+    header: header,
+  )
 
-  (self.methods.touying-slide)(self: self, repeat: none, section: (title: title, short-title: short-title), content)
+  (self.methods.touying-slide)(
+    self: self,
+    repeat: none,
+    section: (title: title, short-title: short-title),
+    content,
+  )
 }
 
-#let focus-slide(self: none, background-color: none, background-img: none, body) = {
-  let background-color = if background-img == none and background-color ==  none {
+#let focus-slide(
+  self: none,
+  background-color: none,
+  background-img: none,
+  body,
+) = {
+  let background-color = if background-img == none and background-color == none {
     rgb(self.colors.primary)
   } else {
     background-color
@@ -116,22 +165,48 @@
   self = utils.empty-page(self, margin: 2em)
   self.page-args += (
     fill: self.colors.primary,
-    ..(if background-color != none { (fill: background-color) }),
-    ..(if background-img != none { (background: {
-        set image(fit: "stretch", width: 100%, height: 100%)
-        background-img
-      })
-    }),
+    ..(
+      if background-color != none {
+        (fill: background-color)
+      }
+    ),
+    ..(
+      if background-img != none {
+        (
+          background: {
+            set image(fit: "stretch", width: 100%, height: 100%)
+            background-img
+          },
+        )
+      }
+    ),
   )
   set text(fill: white, size: 2em)
   (self.methods.touying-slide)(self: self, repeat: none, align(horizon, body))
 }
 
-#let matrix-slide(self: none, columns: none, rows: none, background-color: none, gutter: 5pt, stroke: none, alignment: none, title: none, ..bodies) = {
+#let matrix-slide(
+  self: none,
+  columns: none,
+  rows: none,
+  background-color: none,
+  gutter: 5pt,
+  stroke: none,
+  alignment: none,
+  title: none,
+  ..bodies,
+) = {
   self = utils.empty-page(self)
 
   let footer(self) = {
-    block(inset: 2em, width: 100%, text(fill: self.colors.neutral, utils.call-or-display(self, self.uni-footer)))
+    block(
+      inset: 2em,
+      width: 100%,
+      text(
+        fill: self.colors.neutral,
+        utils.call-or-display(self, self.uni-footer),
+      ),
+    )
   }
 
   if title == none {
@@ -142,8 +217,11 @@
   self.uni-header = self => {
     grid(
       columns: (6fr, 1fr),
-      align(top + left, text(fill: self.colors.primary, weight: "bold", size: 1.2em, title)),
-      align(top + right, image("media/logos/psi_black.png", height: 1.2em))
+      align(
+        top + left,
+        text(fill: self.colors.primary, weight: "bold", size: 1.2em, title),
+      ),
+      align(top + right, image("media/logos/psi_black.png", height: 1.2em)),
     )
   }
 
@@ -154,53 +232,75 @@
   self.page-args += (
     margin: (top: 4em, bottom: 3em, x: 2em),
     footer: footer,
-    header: header)
+    header: header,
+  )
 
-  (self.methods.touying-slide)(self: self, composer: (..bodies) => {
-    let bodies = bodies.pos()
-    let columns = if type(columns) == int {
-      (1fr,) * columns
-    } else if columns == none {
-      (1fr,) * bodies.len()
-    } else {
-      columns
-    }
-    let num-cols = columns.len()
-    let rows = if type(rows) == int {
-      (1fr,) * rows
-    } else if rows == none {
-      let quotient = calc.quo(bodies.len(), num-cols)
-      let correction = if calc.rem(bodies.len(), num-cols) == 0 { 0 } else { 1 }
-      (1fr,) * (quotient + correction)
-    } else {
-      rows
-    }
-    let num-rows = rows.len()
-    if num-rows * num-cols < bodies.len() {
-      panic("number of rows (" + str(num-rows) + ") * number of columns (" + str(num-cols) + ") must at least be number of content arguments (" + str(bodies.len()) + ")")
-    }
-    let cart-idx(i) = (calc.quo(i, num-cols), calc.rem(i, num-cols))
+  (self.methods.touying-slide)(
+    self: self,
+    composer: (..bodies) => {
+      let bodies = bodies.pos()
+      let columns = if type(columns) == int {
+        (1fr,) * columns
+      } else if columns == none {
+        (1fr,) * bodies.len()
+      } else {
+        columns
+      }
+      let num-cols = columns.len()
+      let rows = if type(rows) == int {
+        (1fr,) * rows
+      } else if rows == none {
+        let quotient = calc.quo(bodies.len(), num-cols)
+        let correction = if calc.rem(bodies.len(), num-cols) == 0 {
+          0
+        } else {
+          1
+        }
+        (1fr,) * (quotient + correction)
+      } else {
+        rows
+      }
+      let num-rows = rows.len()
+      if num-rows * num-cols < bodies.len() {
+        panic("number of rows (" + str(num-rows) + ") * number of columns (" + str(num-cols) + ") must at least be number of content arguments (" + str(
+          bodies.len(),
+        ) + ")")
+      }
+      let cart-idx(i) = (calc.quo(i, num-cols), calc.rem(i, num-cols))
 
-    let alignment = if alignment == none {
-      left + horizon
-    } else {
-      alignment
-    }
+      let alignment = if alignment == none {
+        left + horizon
+      } else {
+        alignment
+      }
 
-    let color-body(idx-body) = {
-      let (idx, body) = idx-body
-      let (row, col) = cart-idx(idx)
-      let color = if calc.even(row + col) { white } else { background-color }
-      set align(alignment)
-      rect(inset: .5em, width: 100%, height: 100%, fill: color, stroke: stroke, body)
-    }
-    let content = grid(
-      columns: columns, rows: rows,
-      gutter: gutter,
-      ..bodies.enumerate().map(color-body)
-    )
-    content
-  }, ..bodies)
+      let color-body(idx-body) = {
+        let (idx, body) = idx-body
+        let (row, col) = cart-idx(idx)
+        let color = if calc.even(row + col) {
+          white
+        } else {
+          background-color
+        }
+        set align(alignment)
+        rect(
+          inset: .5em,
+          width: 100%,
+          height: 100%,
+          fill: color,
+          stroke: stroke,
+          body,
+        )
+      }
+      let content = grid(
+        columns: columns, rows: rows,
+        gutter: gutter,
+        ..bodies.enumerate().map(color-body)
+      )
+      content
+    },
+    ..bodies,
+  )
 }
 
 #let slides(self: none, title-slide: true, slide-level: 1, ..args) = {
@@ -219,7 +319,11 @@
   display-current-section: false,
   footer-columns: (5%, 1fr, 15%),
   footer-a: self => states.slide-counter.display(),
-  footer-b: self => if self.info.short-title == auto { self.info.title } else { self.info.short-title },
+  footer-b: self => if self.info.short-title == auto {
+    self.info.title
+  } else {
+    self.info.short-title
+  },
   footer-c: self => self.info.date.display("[day padding:none] [month repr:long] [year]"),
   ..args,
 ) = {
@@ -231,7 +335,7 @@
       columns: (ratio * 100%, 1fr),
       rows: 2pt,
       components.cell(fill: self.colors.primary),
-      components.cell(fill: self.colors.secondary)
+      components.cell(fill: self.colors.secondary),
     )
   })
   self.uni-display-current-section = display-current-section
@@ -256,10 +360,18 @@
     if self.uni-title != none {
       grid(
         columns: (6fr, 1fr),
-        align(top + left, text(fill: self.colors.primary, weight: "bold", size: 1.2em, self.uni-title)),
-        align(top + right, image("media/logos/psi_black.png", height: 1.2em))
+        align(
+          top + left,
+          text(
+            fill: self.colors.primary,
+            weight: "bold",
+            size: 1.2em,
+            self.uni-title,
+          ),
+        ),
+        align(top + right, image("media/logos/psi_black.png", height: 1.2em)),
       )
-      } else {
+    } else {
       grid(
         columns: (1fr),
         align(top + right, image("media/logos/psi_black.png", height: 1.2em))
@@ -273,7 +385,14 @@
   }
 
   let footer(self) = {
-    block(inset: 2em, width: 100%, text(fill: self.colors.neutral, utils.call-or-display(self, self.uni-footer)))
+    block(
+      inset: 2em,
+      width: 100%,
+      text(
+        fill: self.colors.neutral,
+        utils.call-or-display(self, self.uni-footer),
+      ),
+    )
   }
 
   self.page-args += (
@@ -293,7 +412,11 @@
   self.methods.matrix-slide = matrix-slide
   self.methods.slides = slides
   self.methods.touying-outline = (self: none, enum-args: (:), ..args) => {
-    states.touying-outline(self: self, enum-args: (tight: false,) + enum-args, ..args)
+    states.touying-outline(
+      self: self,
+      enum-args: (tight: false) + enum-args,
+      ..args,
+    )
   }
   self.methods.alert = (self: none, it) => text(fill: self.colors.primary, it)
   self.methods.init = (self: none, body) => {
@@ -314,20 +437,30 @@
     neutral-lightest: rgb("#ffffff"),
     neutral-dark: rgb("#555555"),
     neutral-darker: rgb("#2b2b2b"),
-    neutral-darkest: rgb("#000000"))
+    neutral-darkest: rgb("#000000"),
+  )
   if color-scheme == "blue-green" {
-    self.colors += (primary: rgb("#0014e6"), secondary: rgb("#00f0a0"), tertiary: rgb("#000000"))
+    self.colors += (
+      primary: rgb("#0014e6"),
+      secondary: rgb("#00f0a0"),
+      tertiary: rgb("#000000"),
+    )
     self.background-image = image("media/backgrounds/blue-green.png")
-  }
-  else if color-scheme == "pink-yellow" {
-    self.colors += (primary: rgb("#dc005a"), secondary: rgb("#f0f500"), tertiary: rgb("#000000"))
+  } else if color-scheme == "pink-yellow" {
+    self.colors += (
+      primary: rgb("#dc005a"),
+      secondary: rgb("#f0f500"),
+      tertiary: rgb("#000000"),
+    )
     self.background-image = image("media/backgrounds/pink-yellow.png")
-  }
-  else if color-scheme == "navy-red" {
-    self.colors += (primary: rgb("#000073"), secondary: rgb("#dc005a"), tertiary: rgb("#000000"))
+  } else if color-scheme == "navy-red" {
+    self.colors += (
+      primary: rgb("#000073"),
+      secondary: rgb("#dc005a"),
+      tertiary: rgb("#000000"),
+    )
     self.background-image = image("media/backgrounds/navy-red.png")
-  }
-  else {
+  } else {
     panic("color-scheme " + color-scheme + " not supported (must be blue-green/pink-yellow/navy-red)")
   }
 
