@@ -1,7 +1,7 @@
 #import "@preview/touying:0.4.2": *
 #import "@preview/pinit:0.1.4": *
 #import "@preview/xarrow:0.3.0": xarrow
-#import "psi.typ"
+#import "psi-slides.typ"
 
 // color-scheme can be navy-red, blue-green, or pink-yellow
 #let s = psi.register(aspect-ratio: "16-9", color-scheme: "pink-yellow")
