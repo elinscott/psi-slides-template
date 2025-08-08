@@ -8,7 +8,7 @@ For an example see [slides.pdf](./slides.pdf)
 
 ## Missing `touying`?
 
-Don't forget to run `git submodule update` to get access to the latest version of `touying`!
+Don't forget to run `git submodule init; git submodule update` to get access to the latest version of `touying`!
 
 ## Installing fonts
 
