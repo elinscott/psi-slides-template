@@ -1,4 +1,4 @@
-#import "@preview/touying:0.6.1": *
+#import "touying/lib.typ": *
 #import "@preview/pinit:0.1.4": *
 #import "@preview/xarrow:0.3.0": xarrow
 #import "@preview/cetz:0.3.3"

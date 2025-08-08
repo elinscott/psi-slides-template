@@ -1,0 +1,3 @@
+[submodule "touying"]
+	path = touying
+	url = git@github.com:touying-typ/touying.git
